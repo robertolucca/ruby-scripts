@@ -2,11 +2,12 @@ $LOAD_PATH.unshift(File.expand_path(File.dirname(__FILE__)))
 require 'google/api_client'
 require 'google/api_client/client_secrets'
 require 'google/api_client/auth/installed_app'
+require 'pp'
 
 # Initialize the client.
 client = Google::APIClient.new(
-  :application_name => 'Example Ruby application',
-  :application_version => '1.0.0'
+  :application_name => 'Drive API Ruby Demo',
+  :application_version => '0.0.1'
 )
 
 # Initialize Google Drive REST API. Note this will make a request to the
@@ -22,7 +23,7 @@ client_secrets = Google::APIClient::ClientSecrets.load
 flow = Google::APIClient::InstalledAppFlow.new(
   :client_id => client_secrets.client_id,
   :client_secret => client_secrets.client_secret,
-  :scope => ['https://www.googleapis.com/auth/drive.file']
+  :scope => ['https://www.googleapis.com/auth/drive']
 )
 client.authorization = flow.authorize
 parameters={}
@@ -31,5 +32,6 @@ result = client.execute(
   :api_method => drive.files.list,
   :parameters => parameters
 )
-
-puts result.items[]
+puts result.data["items"][0]["title"]
+puts result.data["items"][1]["title"]
+puts result.data["items"].size
