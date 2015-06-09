@@ -7,22 +7,39 @@ birthdates = {
 'Veronica'=>'June 24, 1973',
 'Roberto'=>'April 30, 1959' }
 
-#search
+# search a record
 get '/FamilyMembers/:name' do
   res=birthdates[params[:name]]
   return status 404 if res.nil?
   res
 end
 
-#list
+# list all records
 get '/FamilyMembers' do
   birthdates.to_json 
 end
 
-#add
+# add a new record
 post '/FamilyMembers' do
   res=birthdates[params['name']]
   return status 409 if !res.nil?
   birthdates[params['name']]=params['dob']
   status 201
 end
+
+# delete a record
+delete '/FamilyMembers/:name' do
+  res=birthdates[params[:name]]
+  return status 404 if res.nil?
+  birthdates.delete(params[:name])
+  status 202
+end
+
+# update a record
+put '/FamilyMembers/:name' do
+  res=birthdates[params[:name]]
+  return status 404 if res.nil?
+  birthdates[params[:name]]=params[:dob]
+  status 202
+end
+

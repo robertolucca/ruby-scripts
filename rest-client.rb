@@ -43,6 +43,25 @@ begin
       dob=gets().chop!
       resp = Net::HTTP.post_form(URI.parse(url),'name' => name, 'dob' => dob)
       print resp.code,'  ',resp.message,"\n"
+    when 'd' then
+      print "Enter name   -> "
+      name=gets().chop!
+      uri=URI(url+'/'+name)
+      http=Net::HTTP.new(uri.host, uri.port)
+      req=Net::HTTP::Delete.new(uri.path)
+      resp=http.request(req)
+      print resp.code,'  ',resp.message,"\n"
+    when 'u' then
+      print "Enter name -> "
+      name=gets().chop!
+      print "Enter birth date  -> "
+      dob=gets().chop!
+      uri=URI(url+'/'+name)
+      http=Net::HTTP.new(uri.host, uri.port)
+      req=Net::HTTP::Put.new(uri.path)
+      req.set_form_data('dob' => dob)
+      resp=http.request(req)
+      print resp.code,'  ',resp.message,"\n"
     when 'q' then
       exit
     else 
